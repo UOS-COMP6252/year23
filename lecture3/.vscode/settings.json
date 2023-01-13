@@ -1,0 +1,51 @@
+{
+   
+  "latex-workshop.latex.tools":[
+   {
+     "name": "pdflatex_W32",
+     "command": "pdflatex.exe",
+     "args": [
+      "-interaction=nonstopmode",
+      "-synctex=1",
+       "-output-directory=pdf",
+       "-aux-directory=auxilary",
+       "%DOCFILE%"
+     ]
+   }, 
+   {
+    "name": "pdflatex",
+    "command": "pdflatex",
+    "args": [
+     "-interaction=nonstopmode",
+     "-synctex=1",
+      "-output-directory=pdf",
+      "%DOCFILE%"
+    ]
+  }
+  ],
+  
+  
+   "latex-workshop.latex.recipes":[
+   
+     {
+       "name": "Linux",
+       "tools": [
+         "pdflatex","pdflatex"
+         ]
+       },
+       {
+        "name": "Windows",
+        "tools": [
+          "pdflatex"
+          ]
+        }
+    ],  
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "latex-workshop.latex.outDir": "pdf",
+    "terminal.explorerKind": "external",
+    "terminal.integrated.automationShell.windows": "",
+    "workbench.colorTheme": "Visual Studio 2019 Dark",
+  "latex-workshop.synctex.afterBuild.enabled": true,
+  "jupyter.sendSelectionToInteractiveWindow": false,
+  "workbench.editorAssociations": {}
+  }

@@ -1,0 +1,873 @@
+\documentclass{beamer}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{array,booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{wrapfig}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+\definecolor{cadmiumgreen}{rgb}{0.0, 0.42, 0.24}
+
+\usepackage{listings}
+\lstset{language=Python,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\small\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\usetikzlibrary{automata,mindmap,graphs}
+\usetikzlibrary{shapes}
+
+
+\usepackage{hus-beamer} % for inserting HUS logos at the top-right and bottom-left corners, modify hus-beamer.sty for removing or re-positioning the logos
+%\usepackage[sfdefault]{roboto} 
+\hypersetup{
+    unicode=true,          % non-Latin characters in Acrobat’s bookmarks
+    pdfencoding=unicode,
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={HUS-Beamer Template},    % title
+    pdfauthor={Hikmat Farhat},     % author
+    pdfsubject={Inductive invariants in a continuous setting},   % subject of the document
+    pdfcreator={Hikmat Farhat},   % creator of the document
+    pdfproducer={LaTeX}, % producer of the document
+    pdfnewwindow=true,      % links in new window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=false,          % color of internal links (change box color with linkbordercolor)
+    urlcolor=false}
+    
+\usepackage[british]{babel}
+
+\mode<presentation>{
+	\usefonttheme{professionalfonts} % normal font for math formulas
+	% insert section page with title only
+	% before each section
+	\AtBeginSection[]{
+	\begin{frame}%[noframenumbering] % remove this if you do not want to number section page
+	\vfill
+	\centering
+	\begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+	\usebeamerfont{title}\insertsectionhead\par%
+	\end{beamercolorbox}
+	\vfill
+	\end{frame}
+}
+}
+
+% Some common packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\setbeamertemplate{theorems}[numbered] % numbering theorem environment
+
+%%% New environment
+
+\theoremstyle{plain} % other style are definition and example, you can also define your own style
+\newtheorem{proposition}{Proposition}
+
+%%% Numbering examples with a separate counter, comment the below if not use
+\usepackage{etoolbox} % for \undef command => re-define environment
+\undef{\problem}
+\newtheorem{problem}{Problem}
+\undef{\example}
+\theoremstyle{example} % style of the example environment
+\newtheorem{example}{Example}
+
+\newcommand{\deriv}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
+\newcommand{\INf}{\mathrm{In}_{f}}
+\newcommand{\INnf}{\mathrm{In}_{-f}}
+\newcommand{\rk}{\mathrm{rk}}
+\newcommand{\red}[1]{{\bf \textcolor{red}{#1}}}
+\newcommand{\boldf}[1]{{\bf #1}}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+\newcommand{\ttb}[1]{\textcolor{blue}{\texttt{#1}}}
+\newcommand{\ttr}[1]{\textcolor{red}{\texttt{#1}}}
+
+% Biblatex in beamer
+\usepackage[bibstyle=authoryear, citestyle=authoryear, maxcitenames=2, maxbibnames=100, backend=bibtex]{biblatex}
+
+\AtBeginBibliography{\footnotesize} % Footnotesize for Bibliography entries
+
+\setbeamertemplate{bibliography item}{%
+  \ifboolexpr{ test {\ifentrytype{book}} or test {\ifentrytype{mvbook}}
+    or test {\ifentrytype{collection}} or test {\ifentrytype{mvcollection}}
+    or test {\ifentrytype{reference}} or test {\ifentrytype{mvreference}} }
+    {\setbeamertemplate{bibliography item}[book]}
+    {\ifentrytype{online}
+       {\setbeamertemplate{bibliography item}[online]}
+       {\setbeamertemplate{bibliography item}[article]}}%
+  \usebeamertemplate{bibliography item}}
+
+\defbibenvironment{bibliography}
+  {\list{}
+     {\settowidth{\labelwidth}{\usebeamertemplate{bibliography item}}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+
+\addbibresource{refs.bib}
+
+\defbibheading{bibliography}[\refname]{}
+
+% Info
+\title{Backpropagation}
+\subtitle{Lesson 2}
+\author{COMP6252 (Deep Learning Technologies)}
+\institute[ECS, University of Southampton]{ECS, University of Southampton} \date{}
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+\placelogofalse % No logo at the title page
+\titlepage
+\end{frame}
+
+\placelogotrue % Logo at other pages
+\begin{frame}
+    \frametitle{Computing the gradient}
+\begin{itemize}
+    \item An essential part of Deep Learning is computing the gradient of some loss function
+    \item In most situations one cannot compute the gradient analytically
+    \item PyTorch computes the gradient using three concepts
+    \begin{enumerate}
+        \item Computational Graph
+        \item Maintain a list of the derivatives of \textbf{primitive operations}
+        \item Use the chain rule from calculus
+    \end{enumerate}
+\end{itemize}
+    
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Chain rule}
+\begin{itemize}
+    \item The chain rule allows us to compute the derivative of a composite function. Consider the following example
+\end{itemize}
+\begin{align*}
+    h=g(f(x))
+\end{align*}
+\begin{itemize}
+    \item To  compute $\frac{dh}{dx}$, the chain rule gives
+\end{itemize}    
+\begin{align*}
+    \deriv{h}{x}=\frac{dh}{dg}\frac{dg}{df}\frac{df}{dx}
+\end{align*}
+\begin{itemize}
+    \item The crucial point in the above is that if we know each individual derivative then the result could be computed as the product.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Example}
+    Let $f(x)=x^2$, $g(f)=\ln(f)$,$h(g)=g+1$ with $x=3$. We have:
+    \begin{align*}
+        \frac{df}{dx}&=2x=6\\
+        \frac{dg}{df}&=\frac{1}{f}=\frac{1}{9}\\
+        \frac{dh}{dg}&=1
+    \end{align*}
+  Therefore
+  \begin{align*}
+    \frac{dh}{dx}=1\times\frac{1}{9}\times 6=\frac{2}{3}
+  \end{align*}  
+An important part of the above is that we know the derivative of \textbf{primitive operations/functions}: even the most complicated of expressions can be broken down into a sequence of primitive operations.
+\end{frame}
+\begin{frame}
+    \frametitle{A second example}
+    \begin{itemize}
+        \item In the previous example each function depended on a single variable
+        \item What happens when a function depends on multiple variables?
+        \item Use partial derivatives
+        \item Sum the contributions from different variables
+        \item Consider the following computational
+    \end{itemize}
+   
+\begin{align*}
+    a&=2\\
+    b&=4\\
+    c&=a+b\\
+    d&=\log(a)*\log(b) \text{  //not a primitive op. More later}\\
+    e&=c*d
+\end{align*}    
+
+\end{frame}
+\begin{frame}
+    \frametitle{A second example}
+   
+\begin{align*}
+    c&=a+b\Rightarrow \deriv{c}{a}=1, \deriv{c}{b}=1\\
+    d&=\log(a)*\log(b)\Rightarrow \deriv{d}{a}=\frac{\log(b)}{a\ln(2)},\deriv{d}{b}=\frac{\log(a)}{b\ln(2)}\\
+    e&=c*d\Rightarrow \deriv{e}{c}=d,\deriv{e}{d}=c
+\end{align*}    
+\begin{itemize}
+    \item Therefore
+\end{itemize}
+\begin{align*}
+    \deriv{e}{a}&=\deriv{e}{c}\deriv{c}{a}+\deriv{e}{d}\deriv{d}{a}=d\times 1+c\times \frac{\log(b)}{a\ln(2)}\\
+    \deriv{e}{b}&=\deriv{e}{c}\deriv{c}{b}+\deriv{e}{d}\deriv{d}{b}=d\times 1+c\times \frac{\log(a)}{b\ln(2)}
+\end{align*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{How can we automate differentiation using the chain rule?}
+    \begin{itemize}
+        \item  Now that we know about the chain rule, how can one use it to compute the gradient?
+        \item Construct a graph where each primitive operation is represented by a node
+        \item For each such node, attach auxillary nodes to compute its derivative
+        \item As an example, let us see how one can automatically computes the following
+    \end{itemize}
+   
+\begin{align*}
+    a&=2\\
+    b&=4\\
+    c&=a+b\\
+    d&=\log(a)*\log(b) \text{  //not a primitive op. More later}\\
+    e&=c*d
+\end{align*}    
+
+\end{frame}
+\begin{frame}[t,fragile]{Computational Graph}
+ 
+\begin{columns}[T] % align columns
+\begin{column}{.8\textwidth}
+%\color{red}\rule{\linewidth}{4pt}
+
+%\tikzset{elliptic state/.style={draw,ellipse}}
+\tikzset{
+    invisible/.style={opacity=0},
+    visible on/.style={alt={#1{}{invisible}}},
+    alt/.code args={<#1>#2#3}{%
+      \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+    },
+  }
+% \tikzstyle{every state}=[
+%     draw = black,
+%     thick,
+%     fill = white,
+%     minimum size = 20mm
+% ]
+\begin{tikzpicture}[
+    > = stealth, % arrow head style
+    shorten > = 1pt, % don't touch arrow head to node auto,
+    node distance = 3cm, % distance between nodes
+    semithick, % line style
+    transform shape
+]
+
+
+\node[draw=black,ellipse split, visible on=<4->] (e) { 
+e=c*d
+\nodepart{lower} 
+$e=12$
+};
+
+
+\node[draw=black,ellipse split, visible on=<2->] (c) [below left of=e]
+{
+    c=a+b
+    \nodepart{lower}
+    c=6
+    };
+
+\node[draw=black,ellipse split,visible on=<3->] (d) [below right of=e]
+{
+    $d=\log a*\log b$
+    \nodepart{lower}
+    d=2
+    };
+
+\node[draw=black,ellipse split] (a) [below left of=c]
+{a
+\nodepart{lower}
+a=2
+};
+
+\node[draw=black,ellipse split] (b) [below right of=c]
+{b
+\nodepart{lower}
+b=4
+};
+
+\visible<4->{\graph [use existing nodes] {d -> e;};}
+%\path[->] (d)  edge (e);
+%\path[->]  (c) edge (e);
+\visible<4->{\graph [use existing nodes] {c -> e;};}
+
+%\path[->] (a) edge (c);
+\visible<2->{\graph [use existing nodes] {a -> c;};}
+
+%\path[->] (b) edge (d);
+\visible<3->{\graph [use existing nodes] {b -> d;};}
+\visible<3->{\graph [use existing nodes] {a -> d;};}
+
+
+%\path[->] (d) edge (e);
+\visible<2->{\graph [use existing nodes] {b -> c;};}
+
+%\path[->] (b) edge (c);
+\end{tikzpicture}
+\end{column}%
+\hfill%
+\begin{column}{.20\textwidth}
+\begin{align*}
+    \onslide<1->{a&=2\\}
+    \onslide<1->{b&=4\\}
+    \onslide<2->{c&=a+b\\}
+    \onslide<3->{d&=\log(a)*\log(b)\\}
+    \onslide<4->{e&=c*d}
+\end{align*}
+\end{column}%
+\end{columns}
+
+\end{frame}
+\begin{frame}
+    \frametitle{}
+    How does the construction of the computational graph help in computing the gradients?
+\begin{itemize}
+    
+    \item While constructing the computational graph, auxillary nodes representing the derivatives are added
+    \item Since the graph is a sequence of primitive operations the result of such "local" can be computed as the graph is constructed  
+    \item For example if $z=x+y$, we know that \deriv{z}{x}=1 and \deriv{z}{y}=1
+    \item Therefore when node $z$ is created, nodes for \deriv{z}{x}=1 and \deriv{z}{y}=1 are also created
+    \item We refer to this phase as "forward pass"
+\end{itemize}
+    
+
+\end{frame}
+\begin{frame}[t,fragile]
+    \frametitle{forward pass}
+    \tikzset{
+        invisible/.style={opacity=0},
+        visible on/.style={alt={#1{}{invisible}}},
+        alt/.code args={<#1>#2#3}{%
+          \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+        },
+      }
+    \begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 2cm, % distance between nodes
+        semithick % line style
+    ]
+
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 15mm
+    ]
+    \node[draw=black,ellipse split,visible on=<4->] (e) {    
+    $\scriptstyle e=c*d$
+    \nodepart{lower}
+    %$\scriptstyle\deriv{e}{e}=1$
+    };
+    %\node[align=center,anchor=south] (elabel) at (e.south) {e=12};
+
+    \node[rectangle,draw,visible on=<4->] (ec) [below left of=e]{$\scriptstyle\frac{\partial e}{\partial c}=d=2$};
+    \node[rectangle,draw,visible on=<4->] (ed) [below right of=e]{$\scriptstyle\frac{\partial e}{\partial d}=c=6$};
+    
+    \node[draw=black,ellipse split,visible on=<2->] (c) [below left of=ec]{
+        $\scriptstyle c=a+b$
+        \nodepart{lower}
+       
+        %{\visible<3->{$\scriptstyle \deriv{e}{c}=2$}}
+        };
+    %\node[align=center,anchor=south] (clabel) at (c.south) {c=6 };
+
+    \node[draw,ellipse split,visible on=<3->] (d) [below right of=ed]{
+        $\scriptstyle d=\log a*\log b$
+        \nodepart{lower}
+       %{\visible<3->{$\scriptstyle\deriv{e}{d}=6$}}
+        };
+    %\node[align=center,anchor=south] (dlabel) at (d.south) {d=2};
+    
+    
+    \node[rectangle,draw,visible on=<2->] (ca) [below left of=c]{$\scriptstyle\frac{\partial c}{\partial a}=1$};
+    %\node[text width=2cm,visible on=<2->] (commentc) [above left of=ca] {\tiny we know how to compute these};
+    \node[rectangle,draw,visible on=<2->] (cb) [below right of=c]{$\scriptstyle\frac{\partial c}{\partial b}=1$};
+    
+    \node[draw=black,ellipse split,visible on=<1->] (a) [below left of=ca]{
+        { $\scriptstyle a \ \ \  $  }
+        \nodepart{lower}
+        %{\visible<7->{$\scriptstyle\deriv{e}{a}=2+\frac{6}{\ln{2}}$}}
+    };
+    %\node[align=center,anchor=north] (alabel) at (a.north) {a\\a=2};
+
+    \node[draw=black,ellipse split,visible on=<1->] (b) [below right of=cb]
+    {
+        $\scriptstyle b\ \ \ $
+        \nodepart{lower}
+        %{\visible<5->{$\scriptstyle \deriv{e}{b}=2+\frac{6}{4*\ln{2}}$}}
+    };
+    %\node[align=center,anchor=north] (blabel) at (b.north) {b\\b=4};
+    \node[rectangle,draw,visible on=<3->] (db) [below of=d]{$\scriptstyle\frac{\partial d}{\partial b}=\frac{\log a}{b\ln 2}=\frac{1}{4\ln 2}$};
+
+    \node[rectangle,draw,visible on=<3->] (da) [below left of=cb]{$\scriptstyle\frac{\partial d}{\partial a}=\frac{\log b}{a\ln 2}=\frac{1}{\ln 2}$};
+    \visible<4->{
+        \graph [use existing nodes] {ec -> e;};
+        }
+    %\path[->] (e) edge (ec) ;
+    %\path[->]  (e) edge (ed);
+    
+    \visible<4->{
+        \graph [use existing nodes] {ed -> e;};
+        }
+    %\path[->]  (ec) edge (c);
+    \visible<4->{
+        \graph [use existing nodes] {c -> ec;};
+        }
+    
+    \visible<4->{
+        \graph [use existing nodes] {d -> ed;};
+        }
+    %\path[->] (d) edge (ed);
+    \visible<2->{
+        \graph [use existing nodes] {ca -> c;};
+        }
+    \visible<2->{
+            \graph [use existing nodes] {cb -> c;};
+        }
+    \visible<3->{
+       \graph [use existing nodes] {db -> d;};
+       }
+    \visible<3->{
+        \graph [use existing nodes] {da -> d;};
+        }
+
+    \visible<2->{
+        \graph [use existing nodes] {a -> ca;};
+    }
+    \visible<3->{
+        \graph [use existing nodes] {b -> db;};
+    }
+    \visible<2->{
+        \graph [use existing nodes] {b -> cb;};
+    }
+    % \visible<2->{
+    %     \graph [use existing nodes] {commentc ->cb;};
+    % }
+    % \visible<2->{
+    %     \graph [use existing nodes] {commentc -> ca;};
+    % }
+    \visible<3->{
+        \graph [use existing nodes] {a -> da;};
+    }
+
+\end{tikzpicture}
+
+\end{frame}
+
+
+% \begin{frame}[t,fragile]
+%     \frametitle{Backward pass}
+%     \tikzset{
+%         invisible/.style={opacity=0},
+%         visible on/.style={alt={#1{}{invisible}}},
+%         alt/.code args={<#1>#2#3}{%
+%           \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+%         },
+%       }
+%     \begin{tikzpicture}[
+%         > = stealth, % arrow head style
+%         shorten > = 1pt, % don't touch arrow head to node
+%         auto,
+%         node distance = 2cm, % distance between nodes
+%         semithick % line style
+%     ]
+
+%     \tikzstyle{every state}=[
+%         draw = black,
+%         thick,
+%         fill = white,
+%         minimum size = 15mm
+%     ]
+
+%     \node[draw=black,ellipse split] (e) {    
+%     $\scriptstyle e=c*d$
+%     \nodepart{lower}
+%     $\scriptstyle\deriv{e}{e}=1$
+%     };
+%     %\node[align=center,anchor=south] (elabel) at (e.south) {e=12};
+
+%     \node[rectangle,draw] (ec) [below left of=e]{$\scriptstyle\frac{\partial e}{\partial c}=d=2$};
+%     \node[rectangle,draw] (ed) [below right of=e]{$\scriptstyle\frac{\partial e}{\partial d}=c=6$};
+    
+%     \node[draw=black,ellipse split] (c) [below left of=ec]{
+%         $\scriptstyle c=a+b$
+%         \nodepart{lower}
+       
+%         {\visible<3->{$\scriptstyle \deriv{e}{c}=2$}}
+%         };
+%     %\node[align=center,anchor=south] (clabel) at (c.south) {c=6 };
+
+%     \node[draw,ellipse split] (d) [below right of=ed]{
+%         $\scriptstyle d=\log a*\log b$
+%         \nodepart{lower}
+%         {\visible<3->{$\scriptstyle\deriv{e}{d}=6$}}
+%         };
+%     %\node[align=center,anchor=south] (dlabel) at (d.south) {d=2};
+    
+    
+%     \node[rectangle,draw] (ca) [below left of=c]{$\scriptstyle\frac{\partial c}{\partial a}=1$};
+%     \node[rectangle,draw] (cb) [below right of=c]{$\scriptstyle\frac{\partial c}{\partial b}=1$};
+    
+%     \node[draw=black,ellipse split] (a) [below left of=ca]{
+%         $\scriptstyle a$
+%         \nodepart{lower}
+%         {\visible<7->{$\scriptstyle\deriv{e}{a}=2+\frac{6}{\ln{2}}$}}
+%     };
+%     %\node[align=center,anchor=north] (alabel) at (a.north) {a\\a=2};
+
+%     \node[draw=black,ellipse split] (b) [below right of=cb]
+%     {
+%         $\scriptstyle b$
+%         \nodepart{lower}
+%         {\visible<5->{$\scriptstyle \deriv{e}{b}=2+\frac{6}{4*\ln{2}}$}}
+%     };
+%     %\node[align=center,anchor=north] (blabel) at (b.north) {b\\b=4};
+%     \node[rectangle,draw] (db) [below of=d]{$\scriptstyle\frac{\partial d}{\partial b}=\frac{\log a}{b\ln 2}=\frac{1}{4\ln 2}$};
+
+%     \node[rectangle,draw] (da) [below left of=cb]{$\scriptstyle\frac{\partial d}{\partial a}=\frac{\log b}{a\ln 2}=\frac{1}{\ln 2}$};
+%     \visible<2->{
+%         \graph [use existing nodes] {e -> ec;};
+%         }
+%     %\path[->] (e) edge (ec) ;
+%     %\path[->]  (e) edge (ed);
+    
+%     \visible<2->{
+%         \graph [use existing nodes] {e -> ed;};
+%         }
+%     %\path[->]  (ec) edge (c);
+%     \visible<3->{
+%         \graph [use existing nodes] {ec -> c;};
+%         }
+    
+%     \visible<3->{
+%         \graph [use existing nodes] {ed -> d;};
+%         }
+%     %\path[->] (d) edge (ed);
+%     \visible<6->{
+%         \graph [use existing nodes] {c -> ca;};
+%         }
+%         \visible<4->{
+%             \graph [use existing nodes] {c -> cb;};
+%             }
+%     \visible<4->{
+%        \graph [use existing nodes] {d -> db;};
+%        }
+%     \visible<6->{
+%         \graph [use existing nodes] {d -> da;};
+%         }
+
+%        %\path[->] (d) edge (da);
+%             %\path[->] (d) edge (db);
+%     %\path[->]  (c) edge (ca);
+%     %\path[->]  (c) edge (cb);
+%     %\path[->] (ca) edge (a);
+%     \visible<7->{
+%         \graph [use existing nodes] {ca -> a;};
+%     }
+%     \visible<5->{
+%         \graph [use existing nodes] {db -> b;};
+%     }
+%     \visible<5->{
+%         \graph [use existing nodes] {cb -> b;};
+%     }
+%     \visible<7->{
+%         \graph [use existing nodes] {da -> a;};
+%     }
+%     %\path[->] (db) edge (b);
+   
+%     %\path[->] (cb) edge (b);    
+%     %\path[->] (da) edge (a);
+    
+
+
+% \end{tikzpicture}
+
+% \end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Eager vs Graph mode}
+\begin{itemize}
+    \item Most ML frameworks support two modes of execution
+    \begin{enumerate}
+        \item Eager mode: operators are executed immediately. This is PyTorch default
+        \item Graph mode: the computation starts \textbf{after} the whole  graph for the forward pass is built 
+    \end{enumerate}
+    \item In eager mode \textbf{no forward pass graph is built}
+    \item In our example we built forward pass graphs for purely  illustrative purposes
+    \item The graph for computing the gradients (backward pass) \textbf{is built}
+    \item Next we describe how the backward pass uses the graph to compute the gradients
+    \item The nodes that are actually created in eager mode are \textbf{colored in red}
+\end{itemize}
+    
+
+\end{frame}
+
+\begin{frame}[t,fragile]
+    \frametitle{Backward pass}
+    \tikzset{
+        invisible/.style={opacity=0},
+        visible on/.style={alt={#1{}{invisible}}},
+        alt/.code args={<#1>#2#3}{%
+          \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+        },
+      }
+    \begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 2cm, % distance between nodes
+        semithick % line style
+    ]
+
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 15mm
+    ]
+
+    \node[draw=black,ellipse split] (e) {    
+    $\scriptstyle e=c*d$
+    \nodepart{lower}
+    $\scriptstyle\deriv{e}{e}=1$
+    };
+    %\node[align=center,anchor=south] (elabel) at (e.south) {e=12};
+
+    \node[rectangle,draw,color=red] (ec) [below left of=e]{$\scriptstyle\frac{\partial e}{\partial c}=d=2$};
+    \node[rectangle,draw,color=red] (ed) [below right of=e]{$\scriptstyle\frac{\partial e}{\partial d}=c=6$};
+    
+    \node[draw=black,ellipse split] (c) [below left of=ec]{
+        $\scriptstyle c=a+b$
+        \nodepart{lower}
+       
+        {\visible<3->{$\scriptstyle \deriv{e}{c}=2$}}
+        };
+    %\node[align=center,anchor=south] (clabel) at (c.south) {c=6 };
+
+    \node[draw,ellipse split] (d) [below right of=ed]{
+        $\scriptstyle d=\log a*\log b$
+        \nodepart{lower}
+        {\visible<3->{$\scriptstyle\deriv{e}{d}=6$}}
+        };
+    %\node[align=center,anchor=south] (dlabel) at (d.south) {d=2};
+    
+    
+    \node[rectangle,draw,color=red] (ca) [below left of=c]{$\scriptstyle\frac{\partial c}{\partial a}=1$};
+    \node[rectangle,draw,color=red] (cb) [below right of=c]{$\scriptstyle\frac{\partial c}{\partial b}=1$};
+    
+    \node[draw=black,ellipse split] (a) [below left of=ca]{
+        $\scriptstyle a$
+        \nodepart{lower}
+        {\visible<7->{$\scriptstyle\deriv{e}{a}=2+\frac{6}{\ln{2}}$}}
+    };
+    %\node[align=center,anchor=north] (alabel) at (a.north) {a\\a=2};
+
+    \node[draw=black,ellipse split] (b) [below right of=cb]
+    {
+        $\scriptstyle b$
+        \nodepart{lower}
+        {\visible<5->{$\scriptstyle \deriv{e}{b}=2+\frac{6}{4*\ln{2}}$}}
+    };
+    %\node[align=center,anchor=north] (blabel) at (b.north) {b\\b=4};
+    \node[rectangle,draw,color=red] (db) [below of=d]{$\scriptstyle\frac{\partial d}{\partial b}=\frac{\log a}{b\ln 2}=\frac{1}{4\ln 2}$};
+
+    \node[rectangle,draw,color=red] (da) [below left of=cb]{$\scriptstyle\frac{\partial d}{\partial a}=\frac{\log b}{a\ln 2}=\frac{1}{\ln 2}$};
+    \visible<2->{
+        \graph [use existing nodes] {e -> ec;};
+        }
+    %\path[->] (e) edge (ec) ;
+    %\path[->]  (e) edge (ed);
+    
+    \visible<2->{
+        \graph [use existing nodes] {e -> ed;};
+        }
+    %\path[->]  (ec) edge (c);
+    \visible<3->{
+        \graph [use existing nodes] {ec -> c;};
+        }
+    
+    \visible<3->{
+        \graph [use existing nodes] {ed -> d;};
+        }
+    %\path[->] (d) edge (ed);
+    \visible<6->{
+        \graph [use existing nodes] {c -> ca;};
+        }
+        \visible<4->{
+            \graph [use existing nodes] {c -> cb;};
+            }
+    \visible<4->{
+       \graph [use existing nodes] {d -> db;};
+       }
+    \visible<6->{
+        \graph [use existing nodes] {d -> da;};
+        }
+
+       %\path[->] (d) edge (da);
+            %\path[->] (d) edge (db);
+    %\path[->]  (c) edge (ca);
+    %\path[->]  (c) edge (cb);
+    %\path[->] (ca) edge (a);
+    \visible<7->{
+        \graph [use existing nodes] {ca -> a;};
+    }
+    \visible<5->{
+        \graph [use existing nodes] {db -> b;};
+    }
+    \visible<5->{
+        \graph [use existing nodes] {cb -> b;};
+    }
+    \visible<7->{
+        \graph [use existing nodes] {da -> a;};
+    }
+    %\path[->] (db) edge (b);
+   
+    %\path[->] (cb) edge (b);    
+    %\path[->] (da) edge (a);
+    
+
+
+\end{tikzpicture}
+
+\end{frame}
+\begin{frame}
+    \frametitle{Details for node d}
+
+    \begin{itemize}
+        \item For simplicity and slide space consideration the computation for node $d$ was somehow condensed 
+        \item $d=\log(a)*\log(b)$ \textbf{is not a primitive operation}
+        \item An ML framework would actually break it down into a sequence of primitive operations by creating temporary, unnamed, nodes
+    \end{itemize}
+    \begin{align*}
+        t_1&=\log(a)\Rightarrow \deriv{t_1}{a}=\frac{1}{a\ln(2)}\\
+        t_2&=\log(b)\Rightarrow \deriv{t_2}{b}=\frac{1}{b\ln(2)}\\
+        d&=t_1*t_2\Rightarrow \deriv{d}{t_1}=t_2,\deriv{d}{t_2}=t_1
+    \end{align*}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Details for node d}
+    \begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 2cm, % distance between nodes
+        semithick, % line style
+        scale=0.6,
+        fontscale/.style=8
+    ]
+
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 10mm
+    ]
+
+    \node[ellipse split, draw] (d) {
+        $\scriptstyle d=\log(a)*\log(b)=2$
+        \nodepart{lower}
+         $\scriptstyle\frac{\partial e}{\partial d}=6$
+        };
+    %\node[align=center,anchor=south] (dlabel) at (d.south) {$\frac{\partial d}{\partial d}=1$};
+
+     \node[rectangle,draw] (dloga) [below left of=d]{$\scriptstyle\frac{\partial d}{\partial \log(a)}=\log(b)=2$};
+     \node[rectangle,draw] (dlogb) [below right of=d]{$\scriptstyle\frac{\partial d}{\partial \log(b)}=\log(a)=1$};
+        
+    \node[draw,ellipse split] (loga) [below left of=dloga]{
+        
+    $\scriptstyle\log(a)=1$
+    \nodepart{lower}
+    $\scriptstyle\frac{\partial e}{\partial \log(a)}=12$
+    
+    };
+     %\node[align=center,anchor=south] (logalabel) at (loga.south) {$\frac{\partial d}{\partial \log(a)}=2$};
+
+    \node[ellipse split, draw] (logb) [below left of=dlogb]{
+        $\scriptstyle\log(b)=2$
+        \nodepart{lower}
+        {$\scriptstyle\frac{\partial e}{\partial \log(b)}=6$}
+        
+        };
+
+    \node[rectangle,draw] (da) [below left of=loga]{$\scriptstyle\frac{\partial \log(a)}{\partial a}=\frac{1}{a*\ln(2)}$};
+    \node[rectangle,draw] (db) [below right of=logb]{$\scriptstyle\frac{\partial \log(b)}{\partial b}=\frac{1}{b*\ln(2)}$};
+   
+    \node[ellipse split,draw] (a) [below left of=da] (a){
+        $\scriptstyle a=2$ 
+        \nodepart{lower} 
+        $\scriptstyle\frac{\partial e}{\partial a}+=\frac{12}{2*\ln(2)}=8.65$
+        };
+   
+    \node[ellipse split, draw] (b) [below left of=db]{
+    $\scriptstyle b=4$
+    \nodepart{lower}
+    $\scriptstyle\frac{\partial d}{\partial b}+=\frac{6}{4*\ln(2)}=2.16$
+    };
+
+   
+     \path[->] (d) edge (dloga) ;
+    \path[->] (d)  edge (dlogb);
+     \path[->]  (dloga) edge (loga);
+     \path[->]  (loga) edge (da);
+     \path[->]  (da) edge (a);
+
+
+     \path[->]  (dlogb) edge (logb);
+     \path[->]  (logb) edge (db);
+     \path[->]  (db) edge (b);
+   
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+    \frametitle{PyTorch Details}
+\begin{itemize}
+    \item PyTorch implements the above using a graph of gradient functions: \lstinline{grad_fn}
+    \item The values in rectangular nodes represent the outputs of those functions
+    \item  The starting point is \lstinline{e.grad_fn} with input 1. The output of \lstinline{e.grad_fn(1.)} is \lstinline{[2,6]} as expected.
+    \item The output \lstinline{[2,6]} is used as input to the functions \lstinline{e.grad_fn.next_functions}
+    \item The code for the whole graph is shown on the corresponding notebook
+\end{itemize}
+\end{frame}
+\end{document}
