@@ -1,0 +1,4 @@
+lecture1: linear regression, loss, mean square error, numpy, gradient descent, some pytorch and grad
+lecture2: extension intro to pytorch, binary cross entropy, logistic regression, sigmoid, backward(), pytorch nn.Module
+lecture3: backprop, theoretical + practical
+lecture4: feedforward, data loaders, softmax and cross entropy
