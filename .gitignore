@@ -1,3 +1,5 @@
 lectures
 misc
 pdf
+*.ipynb_checkpoint*
+MNIST
