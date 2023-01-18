@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\begin{document}
+The goal of this assignment is to build classifiers for the music genre dataset \href{https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification}{GTZAN} using different network architectures.
+The dataset includes audio for 10 different music genres. Also, each audio has a visual representation constructed using MEL spectrograms.
+Steps common to all architectures
+\begin{enumerate}
+    \item Resize the images to 224x224. This must be done when the images are loaded using torchvision.transforms.Resize. 
+    \item Use PyTorch to randomly split the dataset into a training (80\%) and validation(20\%) datasets.
+    \item Run the training for 50 epoch using Adam optimizer.
+    \item For each of the architectures below plot the loss and accuracy vs epoch for both the training and validation datasets.
+    \item For each of the architectures below plot the confusion matrix.
+\end{enumerate}
+The above tasks should be performed for each of the following architectures:
+\begin{enumerate}
+    \item A fully connected network with two hidden layers.
+    \item The convolutional network shown in figure ???
+    \item Modify the CNN in figure?? by adding a batch normalization layer AFTER the max pooling
+    
+\end{enumerate} 
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{course-work-conv.png}
+\end{center}
+\end{document}

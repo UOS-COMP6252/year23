@@ -3,3 +3,4 @@ misc
 pdf
 *.ipynb_checkpoint*
 MNIST
+.vscode
