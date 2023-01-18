@@ -184,7 +184,7 @@
     \item To  compute $\frac{dh}{dx}$, the chain rule gives
 \end{itemize}    
 \begin{align*}
-    \deriv{h}{x}=\frac{dh}{dg}\frac{dg}{df}\frac{df}{dx}
+    \frac{dh}{dx}=\frac{dh}{dg}\frac{dg}{df}\frac{df}{dx}
 \end{align*}
 \begin{itemize}
     \item The crucial point in the above is that if we know each individual derivative then the result could be computed as the product.
@@ -210,8 +210,10 @@ An important part of the above is that we know the derivative of \textbf{primiti
     \begin{itemize}
         \item In the previous example each function depended on a single variable
         \item What happens when a function depends on multiple variables?
-        \item Use partial derivatives
-        \item Sum the contributions from different variables
+        \begin{itemize}
+            \item Use partial derivatives
+            \item Sum the contributions from different variables
+        \end{itemize}
         \item Consider the following computational
     \end{itemize}
    
@@ -242,7 +244,7 @@ An important part of the above is that we know the derivative of \textbf{primiti
 \end{frame}
 
 \begin{frame}
-    \frametitle{How can we automate differentiation using the chain rule?}
+    \frametitle{How can the chain rule help with automated differentiation?}
     \begin{itemize}
         \item  Now that we know about the chain rule, how can one use it to compute the gradient?
         \item Construct a graph where each primitive operation is represented by a node
@@ -359,14 +361,13 @@ b=4
 \begin{itemize}
     
     \item While constructing the computational graph, auxillary nodes representing the derivatives are added
-    \item Since the graph is a sequence of primitive operations the result of such "local" can be computed as the graph is constructed  
+    \item Since the graph is a sequence of primitive operations the result of such "local derivatives" can be computed as the graph is constructed  
     \item For example if $z=x+y$, we know that \deriv{z}{x}=1 and \deriv{z}{y}=1
     \item Therefore when node $z$ is created, nodes for \deriv{z}{x}=1 and \deriv{z}{y}=1 are also created
     \item We refer to this phase as "forward pass"
 \end{itemize}
-    
-
 \end{frame}
+
 \begin{frame}[t,fragile]
     \frametitle{forward pass}
     \tikzset{
@@ -492,137 +493,6 @@ b=4
 \end{frame}
 
 
-% \begin{frame}[t,fragile]
-%     \frametitle{Backward pass}
-%     \tikzset{
-%         invisible/.style={opacity=0},
-%         visible on/.style={alt={#1{}{invisible}}},
-%         alt/.code args={<#1>#2#3}{%
-%           \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
-%         },
-%       }
-%     \begin{tikzpicture}[
-%         > = stealth, % arrow head style
-%         shorten > = 1pt, % don't touch arrow head to node
-%         auto,
-%         node distance = 2cm, % distance between nodes
-%         semithick % line style
-%     ]
-
-%     \tikzstyle{every state}=[
-%         draw = black,
-%         thick,
-%         fill = white,
-%         minimum size = 15mm
-%     ]
-
-%     \node[draw=black,ellipse split] (e) {    
-%     $\scriptstyle e=c*d$
-%     \nodepart{lower}
-%     $\scriptstyle\deriv{e}{e}=1$
-%     };
-%     %\node[align=center,anchor=south] (elabel) at (e.south) {e=12};
-
-%     \node[rectangle,draw] (ec) [below left of=e]{$\scriptstyle\frac{\partial e}{\partial c}=d=2$};
-%     \node[rectangle,draw] (ed) [below right of=e]{$\scriptstyle\frac{\partial e}{\partial d}=c=6$};
-    
-%     \node[draw=black,ellipse split] (c) [below left of=ec]{
-%         $\scriptstyle c=a+b$
-%         \nodepart{lower}
-       
-%         {\visible<3->{$\scriptstyle \deriv{e}{c}=2$}}
-%         };
-%     %\node[align=center,anchor=south] (clabel) at (c.south) {c=6 };
-
-%     \node[draw,ellipse split] (d) [below right of=ed]{
-%         $\scriptstyle d=\log a*\log b$
-%         \nodepart{lower}
-%         {\visible<3->{$\scriptstyle\deriv{e}{d}=6$}}
-%         };
-%     %\node[align=center,anchor=south] (dlabel) at (d.south) {d=2};
-    
-    
-%     \node[rectangle,draw] (ca) [below left of=c]{$\scriptstyle\frac{\partial c}{\partial a}=1$};
-%     \node[rectangle,draw] (cb) [below right of=c]{$\scriptstyle\frac{\partial c}{\partial b}=1$};
-    
-%     \node[draw=black,ellipse split] (a) [below left of=ca]{
-%         $\scriptstyle a$
-%         \nodepart{lower}
-%         {\visible<7->{$\scriptstyle\deriv{e}{a}=2+\frac{6}{\ln{2}}$}}
-%     };
-%     %\node[align=center,anchor=north] (alabel) at (a.north) {a\\a=2};
-
-%     \node[draw=black,ellipse split] (b) [below right of=cb]
-%     {
-%         $\scriptstyle b$
-%         \nodepart{lower}
-%         {\visible<5->{$\scriptstyle \deriv{e}{b}=2+\frac{6}{4*\ln{2}}$}}
-%     };
-%     %\node[align=center,anchor=north] (blabel) at (b.north) {b\\b=4};
-%     \node[rectangle,draw] (db) [below of=d]{$\scriptstyle\frac{\partial d}{\partial b}=\frac{\log a}{b\ln 2}=\frac{1}{4\ln 2}$};
-
-%     \node[rectangle,draw] (da) [below left of=cb]{$\scriptstyle\frac{\partial d}{\partial a}=\frac{\log b}{a\ln 2}=\frac{1}{\ln 2}$};
-%     \visible<2->{
-%         \graph [use existing nodes] {e -> ec;};
-%         }
-%     %\path[->] (e) edge (ec) ;
-%     %\path[->]  (e) edge (ed);
-    
-%     \visible<2->{
-%         \graph [use existing nodes] {e -> ed;};
-%         }
-%     %\path[->]  (ec) edge (c);
-%     \visible<3->{
-%         \graph [use existing nodes] {ec -> c;};
-%         }
-    
-%     \visible<3->{
-%         \graph [use existing nodes] {ed -> d;};
-%         }
-%     %\path[->] (d) edge (ed);
-%     \visible<6->{
-%         \graph [use existing nodes] {c -> ca;};
-%         }
-%         \visible<4->{
-%             \graph [use existing nodes] {c -> cb;};
-%             }
-%     \visible<4->{
-%        \graph [use existing nodes] {d -> db;};
-%        }
-%     \visible<6->{
-%         \graph [use existing nodes] {d -> da;};
-%         }
-
-%        %\path[->] (d) edge (da);
-%             %\path[->] (d) edge (db);
-%     %\path[->]  (c) edge (ca);
-%     %\path[->]  (c) edge (cb);
-%     %\path[->] (ca) edge (a);
-%     \visible<7->{
-%         \graph [use existing nodes] {ca -> a;};
-%     }
-%     \visible<5->{
-%         \graph [use existing nodes] {db -> b;};
-%     }
-%     \visible<5->{
-%         \graph [use existing nodes] {cb -> b;};
-%     }
-%     \visible<7->{
-%         \graph [use existing nodes] {da -> a;};
-%     }
-%     %\path[->] (db) edge (b);
-   
-%     %\path[->] (cb) edge (b);    
-%     %\path[->] (da) edge (a);
-    
-
-
-% \end{tikzpicture}
-
-% \end{frame}
-
-
-
 \begin{frame}
     \frametitle{Eager vs Graph mode}
 \begin{itemize}
@@ -637,9 +507,134 @@ b=4
     \item Next we describe how the backward pass uses the graph to compute the gradients
     \item The nodes that are actually created in eager mode are \textbf{colored in red}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[t,fragile]
+    \frametitle{Eager mode forward pass}
+    \tikzset{
+        invisible/.style={opacity=0},
+        visible on/.style={alt={#1{}{invisible}}},
+        alt/.code args={<#1>#2#3}{%
+          \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+        },
+      }
+    \begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 2cm, % distance between nodes
+        semithick % line style
+    ]
+
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 15mm
+    ]
+    \node[draw=black,ellipse split,visible on=<4->] (e) {    
+    $\scriptstyle e=c*d$
+    \nodepart{lower}
+    %$\scriptstyle\deriv{e}{e}=1$
+    };
+    %\node[align=center,anchor=south] (elabel) at (e.south) {e=12};
+
+    \node[rectangle,draw,color=red,visible on=<4->] (ec) [below left of=e]{$\scriptstyle\frac{\partial e}{\partial c}=d=2$};
+    \node[rectangle,draw,color=red,visible on=<4->] (ed) [below right of=e]{$\scriptstyle\frac{\partial e}{\partial d}=c=6$};
     
+    \node[draw=black,ellipse split,visible on=<2->] (c) [below left of=ec]{
+        $\scriptstyle c=a+b$
+        \nodepart{lower}
+       
+        %{\visible<3->{$\scriptstyle \deriv{e}{c}=2$}}
+        };
+    %\node[align=center,anchor=south] (clabel) at (c.south) {c=6 };
+
+    \node[draw,ellipse split,visible on=<3->] (d) [below right of=ed]{
+        $\scriptstyle d=\log a*\log b$
+        \nodepart{lower}
+       %{\visible<3->{$\scriptstyle\deriv{e}{d}=6$}}
+        };
+    %\node[align=center,anchor=south] (dlabel) at (d.south) {d=2};
+    
+    
+    \node[rectangle,draw,color=red,visible on=<2->] (ca) [below left of=c]{$\scriptstyle\frac{\partial c}{\partial a}=1$};
+    %\node[text width=2cm,visible on=<2->] (commentc) [above left of=ca] {\tiny we know how to compute these};
+    \node[rectangle,draw,color=red,visible on=<2->] (cb) [below right of=c]{$\scriptstyle\frac{\partial c}{\partial b}=1$};
+    
+    \node[draw=black,ellipse split,visible on=<1->] (a) [below left of=ca]{
+        { $\scriptstyle a \ \ \  $  }
+        \nodepart{lower}
+        %{\visible<7->{$\scriptstyle\deriv{e}{a}=2+\frac{6}{\ln{2}}$}}
+    };
+    %\node[align=center,anchor=north] (alabel) at (a.north) {a\\a=2};
+
+    \node[draw=black,ellipse split,visible on=<1->] (b) [below right of=cb]
+    {
+        $\scriptstyle b\ \ \ $
+        \nodepart{lower}
+        %{\visible<5->{$\scriptstyle \deriv{e}{b}=2+\frac{6}{4*\ln{2}}$}}
+    };
+    %\node[align=center,anchor=north] (blabel) at (b.north) {b\\b=4};
+    \node[rectangle,draw,color=red,visible on=<3->] (db) [below of=d]{$\scriptstyle\frac{\partial d}{\partial b}=\frac{\log a}{b\ln 2}=\frac{1}{4\ln 2}$};
+
+    \node[rectangle,draw,color=red,visible on=<3->] (da) [below left of=cb]{$\scriptstyle\frac{\partial d}{\partial a}=\frac{\log b}{a\ln 2}=\frac{1}{\ln 2}$};
+    \visible<4->{
+        \graph [use existing nodes] {ec -> e;};
+        }
+    %\path[->] (e) edge (ec) ;
+    %\path[->]  (e) edge (ed);
+    
+    \visible<4->{
+        \graph [use existing nodes] {ed -> e;};
+        }
+    %\path[->]  (ec) edge (c);
+    \visible<4->{
+        \graph [use existing nodes] {c -> ec;};
+        }
+    
+    \visible<4->{
+        \graph [use existing nodes] {d -> ed;};
+        }
+    %\path[->] (d) edge (ed);
+    \visible<2->{
+        \graph [use existing nodes] {ca -> c;};
+        }
+    \visible<2->{
+            \graph [use existing nodes] {cb -> c;};
+        }
+    \visible<3->{
+       \graph [use existing nodes] {db -> d;};
+       }
+    \visible<3->{
+        \graph [use existing nodes] {da -> d;};
+        }
+
+    \visible<2->{
+        \graph [use existing nodes] {a -> ca;};
+    }
+    \visible<3->{
+        \graph [use existing nodes] {b -> db;};
+    }
+    \visible<2->{
+        \graph [use existing nodes] {b -> cb;};
+    }
+    % \visible<2->{
+    %     \graph [use existing nodes] {commentc ->cb;};
+    % }
+    % \visible<2->{
+    %     \graph [use existing nodes] {commentc -> ca;};
+    % }
+    \visible<3->{
+        \graph [use existing nodes] {a -> da;};
+    }
+
+\end{tikzpicture}
 
 \end{frame}
+
+
+
 
 \begin{frame}[t,fragile]
     \frametitle{Backward pass}
@@ -759,15 +754,7 @@ b=4
     \visible<7->{
         \graph [use existing nodes] {da -> a;};
     }
-    %\path[->] (db) edge (b);
-   
-    %\path[->] (cb) edge (b);    
-    %\path[->] (da) edge (a);
-    
-
-
 \end{tikzpicture}
-
 \end{frame}
 \begin{frame}
     \frametitle{Details for node d}
@@ -859,6 +846,81 @@ b=4
    
 \end{tikzpicture}
 \end{frame}
+\begin{frame}
+    \frametitle{Example}
+    to compute $d=a+b+c$? in graph mode, 
+\begin{enumerate}
+    \item how many nodes are needed (without gradient nodes) 
+    \item Including the gradient nodes?
+
+\end{enumerate}
+    
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Graph for $d=a+b+c$}
+    \begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 2cm, % distance between nodes
+        semithick, % line style
+        scale=0.6,
+        fontscale/.style=8
+    ]
+
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 10mm
+    ]
+
+    \node[circle,draw] (d) {
+        $\scriptstyle d=t+c$
+        };
+
+     \node[rectangle,draw] (dddt) [below left of=d]{$\scriptstyle\frac{\partial d}{\partial t}=1$};
+     \node[rectangle,draw] (dddc) [below right of=d]{$\scriptstyle\frac{\partial d}{\partial c}=1$};
+        
+    \node[circle,draw] (t) [below left of=dddt]{
+    $\scriptstyle  t=a+b$
+    };
+    \node[circle,draw,minimum size=10mm] (c) [below right of=dddc]{
+    $\scriptstyle  c$
+    };
+     %\node[align=center,anchor=south] (logalabel) at (loga.south) {$\frac{\partial d}{\partial \log(a)}=2$};
+
+    \node[draw] (dtda) [below left of=t]{
+        $\scriptstyle\deriv{t}{a}=1$
+        };
+    \node[draw] (dtdb) [below right of=t]{
+            $\scriptstyle\deriv{t}{b}=1$
+    };
+            
+    \node[circle,draw,minimum size=10mm] (a) [below left of=dtda]{
+            $\scriptstyle  a$
+    };     
+    
+    \node[circle,draw,minimum size=10mm] (b) [below right of=dtdb]{
+            $\scriptstyle  b$
+    };     
+       
+    \path[->] (a) edge (dtda) ;
+    \path[->] (b)  edge (dtdb);
+    \path[->]  (dtda) edge (t);
+      \path[->]  (dtdb) edge (t);
+    \path[->]  (t) edge (dddt);
+    \path[->]  (dddt) edge (d);
+    \path[->]  (c) edge (dddc);
+    \path[->]  (dddc) edge (d);
+   
+\end{tikzpicture}
+\end{frame}
+
+
 
 \begin{frame}
     \frametitle{PyTorch Details}

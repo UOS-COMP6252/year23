@@ -1,16 +1,10 @@
 \documentclass{beamer}
 
 \usepackage[english]{babel}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{hus-beamer}
-\usepackage{xmpmulti}
-\usepackage{animate} 
-\usepackage[bibstyle=authoryear, citestyle=authoryear, maxcitenames=2, maxbibnames=2, backend=bibtex]{biblatex}
-%\usepackage[maxbibnames=2]{biblatex}
-%citestyle=authoryear or numeric or ...
-\addbibresource{ref.bib}
+\usepackage{hus-beamer} 
 %------ tikZ ------%
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows}
@@ -289,77 +283,12 @@
       
       \end{frame}
 
-  
-\begin{frame}[c]
-    \frametitle{Example with stride=2}
-    \begin{center}
-    \begin{tikzpicture}
-    \pgfmathtruncatemacro\N{10}
-    \foreach \j in {1,...,4}{
-        \onslide<\j>{
-            \pgfmathsetmacro{\dx}{
-                \j<3 ? (1.6*(\j-1)): (1.6*(\j-3))
-                }
-            \pgfmathsetmacro{\dy}{
-                \j<3 ? (0.4*(\j-1)): (0.4*(\j-3)-1.)
-                }
-            \pgfmathsetmacro{\tmp}{
-                \j<3 ? (8) : (9)
-            }
-            %\begin{scope}[on background layer]
-                \coordinate (a) at (0+\dx,3+\dy);
-                \coordinate (d) at (0+\dx ,2+ \dy);
-                \coordinate (b) at (1.6+\dx ,3.4+\dy);
-                \coordinate (c) at (1.6+\dx,2.4+ \dy);
-                \filldraw[fill=red,draw=none] (a) -- (b) -- (c) -- (d) --(a);
-            %\end{scope}
-            %\node[rectangle,draw] (r) at (\j,\j) {};
+   \begin{frame}
+    \frametitle{Add stride 2 example here}
+   
     
-              \foreach \k in {1,...,6}
-              {
-              \pgfmathsetmacro{\idx}{0.2*(\k-1)}
-              \pgfmathsetmacro{\sep}{0.8*(\k-1)}
-    
-    
-              %horizontal lines
-              \path[draw] (0,0.5*\k) -- (4,0.5*\k+1);
-              %vertical lines
-              \path[draw] (\sep,3+\idx) -- (\sep,0.5+\idx);
-    
-              }
-              \foreach \k in {1,...,3}
-              {
-              \pgfmathsetmacro{\idx}{0.3*(\k-1)}
-              \pgfmathsetmacro{\sep}{0.3*(\k-1)}
-    
-    
-              %horizontal lines
-              %\path[draw] (5,-2+0.5*\k) -- (6,-1+0.5*\k);
-              \path[draw] (5,-2+0.5*\k) -- (5.6,-1.4+0.5*\k);
-              %vertical lines
-              \path[draw] (5+\sep,-0.5+0.93*\idx) -- (5+\sep,-1.5+0.93*\idx);
-    
-              }
-              \pgfmathsetmacro{\ccx}{
-                \j<3 ? (5.1+0.4*(\j-1)): (5.1+0.4*(\j-3))
-                }
-                \pgfmathsetmacro{\ccy}{
-                    \j<3 ? (-0.5+0.28*(\j-1)): (-1.+0.28*(\j-3))
-                    }
-              \fill (\ccx,\ccy) circle (2pt);
-              \path[draw] (a) -- (\ccx,\ccy);
-              \path[draw] (b) -- (\ccx,\ccy);
-              \path[draw] (c) -- (\ccx,\ccy);
-              \path[draw] (d) -- (\ccx,\ccy);
-        }
-    }
-    
-    \end{tikzpicture}
-    \end{center}
-    
-    \end{frame}
-
-
+   
+   \end{frame}   
 \begin{frame}
     \frametitle{Stride and receptive field}
 \begin{itemize}
@@ -599,56 +528,4 @@ O_{f,i,j}=b_f+\sum_c\sum_{m,n}X_{c,i+m,j+n}*K_{f,c,m,n}
   
 
 \end{frame}
-\begin{frame}
-    \frametitle{Typical CNN}
-\begin{itemize}
-    \item Typically, CNN will have multiple blocks
-    \item Each block has multiple Conv layers with ReLU activation
-    \item At the end of a block a max pooling layer
-\end{itemize}
-    \begin{center}
-        \includegraphics[width=0.9\textwidth]{figs/conv.png}
-    \end{center}
-
-\end{frame}
-\begin{frame}
-    \frametitle{Invariance and Equivariance}
-\begin{itemize}
-    \item Convolution is a translation equivariant operation
-    \begin{itemize}
-        \item It commutes with the translation operation. 
-        \item Let $C$ and $S$ be the convolution and shift operations respectively. 
-        \item For any input $x$ we have
-        \begin{align*}
-            C(S(x))=S(C(x))
-        \end{align*}
-    \end{itemize}
-    \item By contrast, an operation $T$ is invariant to translation iff
-   
-    \begin{align*}
-        T(S(x))=T(x)
-    \end{align*}
-    \item Clearly, convolution is \textbf{not} translation invariant
-    \item Max pooling makes the network approximately invariant to small translations
-\end{itemize}
-    
-
-\end{frame}
-  \begin{frame}
-    \frametitle{Equivariance, Example}
-    Animation taken from \href{https://chriswolfvision.medium.com/what-is-translation-equivariance-and-why-do-we-use-convolutions-to-get-it-6f18139d4c59}{\beamergotobutton{C. Wolf}} 
-\vspace{1cm}
-
-    \transduration<0-39>{0}
-    \multiinclude[<+->][format=png, graphics={width=\textwidth}]{figs/equi}
-\end{frame}
-\begin{frame}
-    \frametitle{References}
-    % \begin{itemize}
-    %     \item \cite{srivastava14}\cite{ioffe15}
-    % \end{itemize}
-\nocite{*}    
-\printbibliography
-\end{frame}
-
 \end{document}
