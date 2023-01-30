@@ -4,3 +4,7 @@ pdf
 *.ipynb_checkpoint*
 MNIST
 .vscode
+cifar*
+*.png
+*.fig
+*logs*
