@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{hus-beamer} 
+\usepackage{listings}
 \usepackage{ifthen}
 \usepackage[bibstyle=authoryear, citestyle=authoryear, maxcitenames=2, maxbibnames=2, backend=bibtex]{biblatex}
 %\usepackage[maxbibnames=2]{biblatex}
@@ -31,7 +32,7 @@
 }
 }
 %%%%%%%%
-%\AtBeginBibliography{\footnotesize} % Footnotesize for Bibliography entries
+\AtBeginBibliography{\footnotesize} % Footnotesize for Bibliography entries
 
 % \setbeamertemplate{bibliography item}{%
 %   \ifboolexpr{ test {\ifentrytype{book}} or test {\ifentrytype{mvbook}}
@@ -271,11 +272,12 @@ Therefore, for each channel, the $\hat{x}_{ci}$ have zero mean and unit variance
     \frametitle{Batch normalization - Why does it work?}
 \begin{itemize}
     \item Considerable ongoing debate
-\item In the original paper of \href{https://arxiv.org/abs/1502.03167}{\beamergotobutton{Ioffe and Szegedy }} it claims that it fixes the internal covariate shift 
+\item In the original paper of \cite{ioffe15} the claim is that it fixes the internal covariate shift 
+% \item \href{https://arxiv.org/abs/1502.03167}{\beamergotobutton{Ioffe and Szegedy }}
 \item meaning the change in the distribution due to the change of the weights during learning 
-\item \href{https://arxiv.org/abs/1805.10694v1}{\beamergotobutton{Kohler et al.}} propose that it separates the change in magnitude from the change of directions.
+\item A different interpretation was given by \cite{kohler2019}: it separates the change in magnitude from the change of directions.
 \item This can be seen from the fact that the $\hat{x}_{ci}$ are normalized and all of them share the same magnitude $\gamma$
-
+\item Another recent interpretation can be found in \cite{chai2020}
 \end{itemize}
 \end{frame}
 
@@ -397,14 +399,106 @@ Consider a mini-batch of size two, containing the tensors of size $2\times 2$, $
         \includegraphics[width=0.9\textwidth]{figs/accuracy-t-vs-v-woBN.png}
     \end{center}
 \end{frame}
+\begin{frame}
+    \frametitle{Data augmentation}
+    \begin{itemize}
+        \item Data augmentation is one method of obtaining higher test/validation accuracy
+        \item Data augmentation is typically done "on-the-fly" in PyTorch
+        \item This is done by applying some transforms to the input
+        \item Example transforms
+        \item Rotation
+        \item Translation
+        \item Horizontal flip
+        \item Random crop
+        \item $\ldots\ldots$
+    \end{itemize}
+    
+
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Example: RandomHorizontalFlip}
+    \begin{itemize}
+        \item Horizontally flip the image with probability 0.5
+        \item \lstinline|RandomHorizontalFlip(p=0.5)|
+    \end{itemize}
+    
+\begin{figure}
+    \begin{center}
+       \includegraphics[width=0.5\textwidth]{figs/flip.png} 
+    \end{center}
+\end{figure}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Example: Translation}
+    \begin{itemize}
+        \item \lstinline!RandomAffine(degrees=0,translate=(0.3,0.3))!
+        \item Used here for translation only
+        \item Can also perform \textit{rotation}, \textit{scale}, \textit{shear},etc...
+    \end{itemize}
+   
+     
+    
+\begin{figure}
+    \begin{center}
+       \includegraphics[width=0.9\textwidth]{figs/translate.png} 
+    \end{center}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Example: Rotation}
+    \begin{itemize}
+        \item  \lstinline!RandomRotation(45)!
+        \item  Rotate between -45 and 45 degrees
+    \end{itemize}
+ 
+    %\begin{lstlisting}
+       
+    %\end{lstlisting}
+\begin{figure}
+    \begin{center}
+       \includegraphics[width=0.9\textwidth]{figs/rotate.png} 
+    \end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Example: Random crop}
+    
+    \begin{lstlisting}
+        RandomCrop((150,150))
+        \end{lstlisting}
+\begin{figure}
+    \begin{center}
+       \includegraphics[width=0.9\textwidth]{figs/crop.png} 
+    \end{center}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Auto augmentation methods}
+\begin{itemize}
+    \item AutoAg methods use a policy to transform the input
+    \item For example which transform to use (e.g. rotation,crop) with what probability
+    \item What values are used for the parameters (e.g. angle)
+    \item Some of use search algorithms to determine the policy (e.g. AutoAugment, \cite{dogus2018})
+    \item Some are very simple (e.g. TrivialAugment,  \cite{muller2021})
+\end{itemize}
+    
+
+\end{frame}
 
 \begin{frame}
     \frametitle{References}
     % \begin{itemize}
     %     \item \cite{srivastava14}\cite{ioffe15}
     % \end{itemize}
-\nocite{*}    
+%\nocite{*}    
+
 \printbibliography
+
 \end{frame}
 
 \end{document}
