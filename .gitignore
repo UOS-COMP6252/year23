@@ -8,3 +8,4 @@ cifar*
 *.png
 *.fig
 *logs*
+*auxilary*
