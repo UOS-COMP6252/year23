@@ -108,6 +108,7 @@
         \item Early stopping
         \item Dropout
         \item Batch normalization 
+        \item Data augmentation
     \end{enumerate}
 \end{frame}
 
@@ -202,7 +203,7 @@
     \begin{align*}
        \mathbf{r}^l&=Bernoulli(p)\\
         \mathbf{\tilde{y}}^l&=\mathbf{r}^l*\mathbf{y}^l\\
-        \mathbf{z}^{l+1}&=\mathbf{W}^{l+1}\mathbf{y}^l+\mathbf{b}^{l+1}\\
+        \mathbf{z}^{l+1}&=\mathbf{W}^{l+1}\mathbf{\tilde{y}}^l+\mathbf{b}^{l+1}\\
         \mathbf{y}^{l+1}&=\sigma(\mathbf{z}^{l+1})
     \end{align*}
 
@@ -215,8 +216,8 @@
         \item To be consistent we must use the weights learned in the training phase for testing
         \item This means we have to \textbf{average} over all possible networks, which is infeasible.
         \item We approximate this averaging by \textbf{not using dropout} during testing
-        \item But the weights obtained in the training phase are multiplied by the probability $p$
-        \item Equivalently the weights are multiplied by $\frac{1}{p}$ during training
+        \item But the weights obtained in the test/validate phase are multiplied by the probability $p$
+        \item Equivalently the weights are multiplied by $\frac{1}{1-p}$ during training
     \end{itemize}
     
 
