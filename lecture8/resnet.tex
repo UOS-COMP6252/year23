@@ -5,6 +5,7 @@
 \usepackage{lmodern}
 \usepackage{hus-beamer}
 \usepackage{ifthen}
+\usepackage{hyperref}
 \usepackage[bibstyle=authoryear, citestyle=authoryear, maxcitenames=2, maxbibnames=2, backend=bibtex]{biblatex}
 %\usepackage[maxbibnames=2]{biblatex}
 %citestyle=authoryear or numeric or ...
@@ -33,11 +34,51 @@
 }
 
 \begin{document}
-\title{Improving Performance}
+\title{Common Architectures}
 %\subtitle{Week 4}
 \author{COMP6252 (Deep Learning Technologies)}
 \institute[ECS, University of Southampton]{ECS, University of Southampton}
  \date{}
+ 
+\begin{frame}[plain,noframenumbering]
+    \placelogofalse % No logo at the title page
+    \titlepage
+\end{frame}
+    
+\placelogotrue
+
+\begin{frame}
+    \frametitle{ImageNet dataset}
+\begin{itemize}
+    \item ImageNet is a massive dataset of images
+    \item More than 14 million images in 20000 categories 
+    \item Images are annotated with more than 1 million with bounding box
+    \item Annual contest ImageNet Large Scale Visual Recognition Challenge (ILSVRC)
+    \item ILSVRC uses about 1000 distinct classes
+    \item ILSVRC led to the development of architectures that are widely used in deep learning
+\end{itemize}
+    
+\end{frame}
+\begin{frame}
+    \frametitle{ILSVRC}
+    \begin{center}
+        \includegraphics[width=\textwidth]{figs/ILSVRC.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Top 5 errors}
+    \includegraphics[width=\textwidth]{figs/top-5.png}
+   \href{https://icml.cc/2016/tutorials/icml2016_tutorial_deep_residual_networks_kaiminghe.pdf}{\beamergotobutton{Image source}}
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Top 5 errors}
+    \includegraphics[width=\textwidth]{figs/alex-vgg.png}
+   \href{https://icml.cc/2016/tutorials/icml2016_tutorial_deep_residual_networks_kaiminghe.pdf}{\beamergotobutton{Image source}}
+\end{frame}
 
 \begin{frame}
 	\frametitle{Residual Networks}
