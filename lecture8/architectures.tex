@@ -111,7 +111,17 @@
    \href{https://icml.cc/2016/tutorials/icml2016_tutorial_deep_residual_networks_kaiminghe.pdf}{\beamergotobutton{Image source}}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Some are better than humans}
 
+	\begin{itemize}
+		\item Humans achieve about 5.1\% error (\cite{human})
+		\item Serious? See photo below
+	\end{itemize}
+\begin{center}
+	\includegraphics[width=0.8\textwidth]{figs/dogs.png}
+\end{center}
+\end{frame}
 
 \begin{frame}
     \frametitle{Alex net/VGG}
@@ -158,7 +168,7 @@
     \item Consider a model $M$ of depth $d$
     \item Construct a deeper model $N$ which adds a single layer $I$ to $M$
     \item With $I(x)=x$ the identity map
-    \item Basically the output of $M$ is used as input to $L$
+    \item Basically the output of $M$ is used as input to $I$
     \item The above implies that $N$ should not give higher error than $M$
     \item It turns out it is hard to learn the identity map
 \end{itemize}
