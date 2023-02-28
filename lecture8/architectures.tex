@@ -5,10 +5,11 @@
 \usepackage{lmodern}
 \usepackage{hus-beamer}
 \usepackage{ifthen}
+%\usetikzlibrary{intersections}
 \usepackage[bibstyle=authoryear, citestyle=authoryear, maxcitenames=2, maxbibnames=2, backend=bibtex]{biblatex}
 %\usepackage[maxbibnames=2]{biblatex}
 %citestyle=authoryear or numeric or ...
-\addbibresource{ref.bib}
+\addbibresource{export.bib}
 
 %------ tikZ ------%
 \usepackage{tikz}
@@ -74,13 +75,14 @@
 \placelogotrue
 \begin{frame}
 	\frametitle{Learning outcomes}
-\begin{itemize}
+\begin{enumerate}
 	\item Be able to differentiate between object classification, single object localization and object detection
 
 	\item Describe AlexNet/VGG/GoogLeNet/ResNet architectures
+	\item Give a high-level description of fast RCNN
 	\item Explain the functioning of the Inception module
 	\item Explain the functioning of the residual module
-\end{itemize}
+\end{enumerate}
 	
 
 \end{frame}
@@ -494,7 +496,44 @@
 		\item precision/recall computed using both correct label and bounding box
 	\end{itemize}
 \end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Intersection over union}
+\begin{center}
+	\includegraphics[width=\textwidth]{figs/iou.png}
+\end{center}
+\end{frame}
+\begin{frame}
+	\frametitle{Precision and Recall}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figs/confusion-mat.png}
+		\href{https://towardsdatascience.com/precision-and-recall-88a3776c8007}{\beamergotobutton{Image source}}
+	\end{center}
+\begin{itemize}
+	\item Precision $\frac{TP}{TP+FP}$
+	\item Recall $\frac{TP}{TP+FN}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Fast RCNN}
+\begin{center}
+	\includegraphics[width=0.7\textwidth]{figs/fast-rcnn.png}
+\end{center}
 	
+
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{References}
+    % \begin{itemize}
+    %     \item \cite{srivastava14}\cite{ioffe15}
+    % \end{itemize}
+	\nocite{*}    
+
+\printbibliography
 
 \end{frame}
 \end{document}
