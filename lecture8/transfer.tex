@@ -65,7 +65,8 @@
 \title{Common network architectures}
 %\subtitle{Week 4}
 \author{COMP6252 (Deep Learning Technologies)}
-\institute[ECS, University of Southampton]{ECS, University of Southampton} \date{28 April 2022}
+\institute[ECS, University of Southampton]{ECS, University of Southampton} 
+\date{}
  \date{}
 \begin{frame}[plain,noframenumbering]
     \placelogofalse % No logo at the title page
@@ -113,6 +114,18 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Why not start from scratch?}
+    \begin{itemize}
+        \item Validation accuracy vs epoch
+        \item ResNet18 pre-trained (all layers): green
+        \item ResNet18 trained with random initial weights: orange
+    \end{itemize}
+\begin{center}
+    \includegraphics[width=\textwidth]{figs/pre-vs-scratch.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
     \frametitle{How to train a pre-trained model}
 \begin{itemize}
     \item There are three approaches for training pre-trained models on a different dataset
@@ -127,17 +140,6 @@
 
 \end{frame}
 
-\begin{frame}
-    \frametitle{Why not start from scratch?}
-    \begin{itemize}
-        \item Validation accuracy vs epoch
-        \item ResNet18 pre-trained (all layers): green
-        \item ResNet18 trained with random initial weights: orange
-    \end{itemize}
-\begin{center}
-    \includegraphics[width=\textwidth]{figs/pre-vs-scratch.png}
-\end{center}
-\end{frame}
 
 
 \begin{frame}
@@ -156,7 +158,45 @@
 \begin{frame}
     \frametitle{SGD with momentum}
 
+    \begin{itemize}
+        \item A simple variant of SGD to reduce fast changing gradient
+        \item It usually leads to better training convergence
+        \item Let $w$ the learnable  be the weights and $\alpha$ the learning rate
+        \item Instead of 
+        \begin{align*}
+            w=w-\alpha \nabla_w\mathcal{L}
+        \end{align*}
+\item use         
+\begin{align*}
+    dw&=\beta dw+(1-\beta)\nabla_w\mathcal{L}\\
+    w&=w-\alpha dw
+\end{align*}
+\item where $\beta$ is a parameter, usually 0.9
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Why is it called moving average?}
+    \begin{center}
+        \includegraphics[width=\textwidth]{figs/momentum.png}
+    \end{center}
     
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Why is it called exponential moving average?}
+\begin{align*}
+    dw_t&=\beta dw_{t-1}+(1-\beta)\nabla_t\mathcal{L}\\
+    &=\beta (\beta dw_{t-2}+(1-\beta)\nabla_{t-1}\mathcal{L})+(1-\beta)\nabla_t\mathcal{L}\\
+    &=\beta^3dw_{t-3}+\beta^2(1-\beta)\nabla_{t-2}\mathcal{L}+\beta(1-\beta)\nabla_{t-1}\mathcal{L}+(1-\beta)\nabla_t\mathcal{L}\\
+    &=\beta^{t-1}(1-\beta)\nabla_1\mathcal{L}+\beta^{t-2}(1-\beta)\nabla_2\mathcal{L}+\ldots+(1-\beta)\nabla_t\mathcal{L}
+\end{align*}
+    \begin{itemize}
+        \item Usually $\beta<1$ so $a>b\Rightarrow \beta^a<\beta^b$
+        \item Moreover, $n\rightarrow \infty\Rightarrow \beta^n\rightarrow 0$
+        \item and $\beta=0\Rightarrow dw_t=\nabla_t\mathcal{L}$
+    \end{itemize}
 
 \end{frame}
 
