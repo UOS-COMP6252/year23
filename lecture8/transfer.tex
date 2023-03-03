@@ -148,7 +148,7 @@
     \item Validation accuracy vs epoch
     \begin{enumerate}
         \item All layers are trained: orange
-        \item Only the last layer is trained (intermediate one are frozen): green
+        \item Only the last layer is trained (intermediate ones are frozen): green
     \end{enumerate}
 \end{itemize}
     \includegraphics[width=\textwidth]{figs/last-vs-all.png}
@@ -161,7 +161,7 @@
     \begin{itemize}
         \item A simple variant of SGD to reduce fast changing gradient
         \item It usually leads to better training convergence
-        \item Let $w$ the learnable  be the weights and $\alpha$ the learning rate
+        \item Let $w$ be the learnable weights and $\alpha$ the learning rate
         \item Instead of 
         \begin{align*}
             w=w-\alpha \nabla_w\mathcal{L}
